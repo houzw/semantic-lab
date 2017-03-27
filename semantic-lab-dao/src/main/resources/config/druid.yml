@@ -1,0 +1,19 @@
+#----- druid数据库连接池 ------#
+druid:
+  initial-size: 3
+  max-active: 10
+  min-idle: 2
+  max-wait: 3000
+  time-between-eviction-runs-millis: 60000
+  min-evictable-idle-time-millis: 300000
+  validation-query: SELECT 'x'
+  test-while-idle: true
+  test-on-borrow: false
+  test-on-return: false
+  pool-prepared-statements: true
+  max-pool-prepared-statement-per-connection-size: 50
+  filters:
+    - stat
+    - wall # 'wall'用于防火墙
+    - slf4j
+  log-abandoned: true

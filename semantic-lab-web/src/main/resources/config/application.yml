@@ -1,0 +1,9 @@
+# Spring主配置文件
+# yaml格式配置文件
+# 键值之间需要有一个空格
+
+# profies：dev  application-dev.yml
+#          prod application-prod.yml
+spring:
+  profiles:
+    active: dev

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>semantic-lab</artifactId>
+        <groupId>org.vmap</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>semantic-lab-ont</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <jena.version>3.1.0</jena.version>
+        <owlapi.version>5.0.2</owlapi.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.vmap</groupId>
+            <artifactId>commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- owlapi-distribution包含owlapi其他所有模块 -->
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-distribution</artifactId>
+            <version>${owlapi.version}</version>
+        </dependency>
+        <!-- jena ：fuseki 和 sdb 等需要另外添加 -->
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <type>pom</type>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-querybuilder</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,8 @@
+# production profile
+
+# Server
+server:
+  port: 8080
+  address: 127.0.0.1
+  session-timeout: 30
+  context-path: /app

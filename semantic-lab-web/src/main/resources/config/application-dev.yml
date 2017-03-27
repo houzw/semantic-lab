@@ -1,0 +1,28 @@
+# development profile
+
+# Server
+server:
+  port: 8080
+  address: 127.0.0.1
+  sessionTimeout: 30
+  contextPath: /app
+
+logging:
+  level:
+    root: WARN
+
+# DataSource
+datasource:
+  db-my:
+    url: jdbc:postgresql://localhost/test #jdbc:mysql://localhost/test
+    username: dblab
+    password: admin
+    driver-class-name: org.postgresql.Driver # com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    #schema: classpath:db.sql
+
+  db-server:
+    url: jdbc:postgresql://localhost/test #jdbc:mysql://localhost/test
+    username: dblab
+    password: admin
+    driver-class-name: org.postgresql.Driver # com.mysql.jdbc.Driver
