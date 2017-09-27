@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="config/mgb.properties"/>
+    <classPathEntry location="${mbg.DBDriver}"/>
+    <context id="tables" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!--SerializablePlugin-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!--dao-->
+        <plugin type="com.vtech.mybatis.baseservice.plugins.ExtendedMapperPlugin">
+        </plugin>
+        <!--service-->
+        <plugin type="com.vtech.mybatis.baseservice.plugins.ServicePlugin">
+            <property name="targetPackage" value="${mbg.servicePkg}"/>
+            <property name="targetProject" value="${mbg.serviceTargetProj}"/>
+        </plugin>
+        <!--serviceimpl-->
+        <plugin type="com.vtech.mybatis.baseservice.plugins.ServiceImplPlugin">
+            <property name="targetPackage" value="${mbg.serviceImplPkg}"/>
+            <property name="servicePackage" value="${mbg.servicePkg}"/>
+            <property name="targetProject" value="${mbg.serviceTargetProj}"/>
+        </plugin>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="${db.driverClass}" connectionURL="${db.url}" userId="${db.username}"
+                        password="${db.password}"/>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!--model-->
+        <javaModelGenerator targetPackage="${mbg.modelPkg}" targetProject="${mbg.modelTargetProj}">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        mapper-xml-->
+        <sqlMapGenerator targetPackage="${mbg.xmlPkg}" targetProject="${mbg.mapperTargetProj}">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--dao-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${mbg.daoPkg}" targetProject="${mbg.mapperTargetProj}">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!--tables-->
+        <table tableName="t_user" domainObjectName="User">
+            <property name="ignoreQualifiersAtRuntime" value="true"/>
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="SELECT nextval('t_user_id_seq')"
+                          identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

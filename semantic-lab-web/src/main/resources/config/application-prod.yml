@@ -1,8 +1,38 @@
 # production profile
+# 生产环境，根据部署服务器进行配置
 
 # Server
 server:
   port: 8080
   address: 127.0.0.1
-  session-timeout: 30
-  context-path: /app
+  sessionTimeout: 30
+  contextPath: /app
+
+# Logging
+logging:
+  level:
+    root: WARN
+
+# DataSource
+spring:
+  datasource:
+    # database
+    master-db:
+      url: jdbc:postgresql://localhost:5432/semtest #jdbc:mysql://localhost/test
+      username: gdo
+      password: geo_ont
+      driver-class-name: org.postgresql.Driver # com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      #schema: classpath:db.sql
+    cluster-db:
+      url: jdbc:postgresql://localhost/test #jdbc:mysql://localhost/test
+      username: dblab
+      password: admin
+      driver-class-name: org.postgresql.Driver # com.mysql.jdbc.Driver
+
+# Jena config
+jena:
+  tdb:
+    assembler: classpath:/ont-config/assembler.ttl
+    dbLocation: /opt/egc/tdb
+    location-mapping: classpath:/ont-config/location-mapping.ttl
