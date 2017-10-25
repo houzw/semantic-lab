@@ -1,3 +1,6 @@
 .idea/
 *.iml
 **/target/
+/semantic-lab-dao/src/main/java/org/semlab/config/DatabaseConfig.java
+/semantic-lab-dao/src/main/java/org/semlab/xml/UserMapper.xml
+/semantic-lab-model/src/main/java/org/semlab/model/User.java

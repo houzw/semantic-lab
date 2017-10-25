@@ -43,7 +43,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${psql.java8.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.postgis/postgis-jdbc -->
         <dependency>
@@ -72,6 +71,13 @@
             <groupId>com.vtech</groupId>
             <artifactId>mybatis-baseservice</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.7</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>semantic-lab-dao</finalName>
