@@ -28,7 +28,7 @@
         <fuseki.version>2.5.0</fuseki.version>
         <guava.version>19.0</guava.version>
         <fastjson.version>1.2.5</fastjson.version>
-        <jackson.version>2.8.8</jackson.version>
+        <jackson.version>2.11.0</jackson.version>
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <log4j-slf4j.version>1.7.21</log4j-slf4j.version>
