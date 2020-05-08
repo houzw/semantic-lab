@@ -1,14 +1,10 @@
 # Semantic Laboratory
 
->   An Ontology & Semantic Web & LInked Data Testbed
+>   under intense development
 
-Ontology store & query & reasoning/infering 
+An Ontology & Semantic Web & Linked Data Testbed for Ontology store & query & reasoning/infering 
 
 ## Frameworks Adopted
 
--   Spring-Boot
 -   Apache Jena
--   Apache Shiro
--   MyBatis
--   Others
 

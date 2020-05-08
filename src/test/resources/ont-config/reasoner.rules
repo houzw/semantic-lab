@@ -1,0 +1,27 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#
+@prefix TimeRela: <http://www.geodataont.cn/base/time/TimeRela.owl#> 
+@prefix TimeProp: <http://www.geodataont.cn/base/time/TimeProp.owl#>
+@prefix CCS: <http://www.geodataont.cn/support/geology/gts/CCS#> 
+@prefix CGS: <http://www.geodataont.cn/support/geology/gts/CGS#> 
+@prefix UniProps: <http://www.geodataont.cn/base/uni/UniProps#>
+@prefix SpatialTopoRela: <http://www.geodataont.cn/base/spatial/SpatialTopoRela#>
+
+# 时态
+[rule_tR_m: (?a TimeRela:intMeets ?b) (?b TimeRela:intMeets ?c) -> (?a TimeRela:intBefore ?c)]
+[rule_tR_e: (?a TimeRela:intEquals ?b) (?b TimeRela:intEquals ?c) -> (?a TimeRela:intEquals ?c)]
+[rule_tR_m2: (?a TimeRela:intMeets ?b) -> (?b TimeRela:intMetBy ?a)]
+[rule_tR_b: (?a TimeRela:intBefore ?b) (?b TimeRela:intBefore ?c) -> (?a TimeRela:intBefore ?c)]
+[rule_tR_c: (?a TimeRela:intContains ?b) (?b TimeRela:intContains ?c) -> (?a TimeRela:intContains ?c)]
+[rule_tR_cd: (?a TimeRela:intContains ?b) ->(?b TimeRela:intDuring ?a) ]
+[rule_tR_ba: (?a TimeRela:intBefore ?b) ->(?b TimeRela:intAfter ?a) ]
+
+[rule_tP_f:(?a TimeRela:intFinishs ?f)(?f TimeProp:valueYear ?y)(?y UniProps:hasValue ?v)->(?a TimeProp:finishTimeValue ?v)]
+[rule_tP_s:(?a TimeRela:intStarts ?f)(?f TimeProp:valueYear ?y)(?y UniProps:hasValue ?v)->(?a TimeProp:startTimeValue ?v)]
+
+# 空间
+[rule_sR_c: (?a SpatialTopoRela:包含  ?b)(?b SpatialTopoRela:包含  ?c)->(?a SpatialTopoRela:包含  ?c)]
+[rule_sR_e: (?a SpatialTopoRela:相等  ?b)(?b SpatialTopoRela:相等  ?c)->(?a SpatialTopoRela:相等  ?c)]
+[rule_sR_cd: (?a SpatialTopoRela:包含  ?b)->(?b SpatialTopoRela:被包含  ?a)]
+

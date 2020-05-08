@@ -18,59 +18,41 @@
 
     <!--统一设置项目版本-->
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.version>1.0-SNAPSHOT</project.version>
         <java.version>1.8</java.version>
-        <mysql.version>5.1.39</mysql.version>
-        <psql.java8.version>9.4.1211</psql.java8.version>
-        <postgis.version>2.2.1</postgis.version>
+        <jena.version>3.14.0</jena.version>
+        <commons.version>2.1-SNAPSHOT</commons.version>
+        <owlapi.version>5.0.2</owlapi.version>
+        <fuseki.version>2.5.0</fuseki.version>
         <guava.version>19.0</guava.version>
-        <morphia.version>1.2.1</morphia.version>
-        <mongo-java-driver.version>3.2.2</mongo-java-driver.version>
-        <pagehelper.version>1.2.2</pagehelper.version>
-        <druid.version>1.0.23</druid.version>
         <fastjson.version>1.2.5</fastjson.version>
         <jackson.version>2.8.8</jackson.version>
-        <spring-boot.version>1.5.2.RELEASE</spring-boot.version>
-        <shiro.version>1.4.0</shiro.version>
-        <ehcache.version>2.6.9</ehcache.version>
-        <fileupload.version>1.3.1</fileupload.version>
-        <activiti.version>5.22.0</activiti.version>
-        <cxf.version>3.1.10</cxf.version>
-        <mybatis-spring-boot.version>1.3.1</mybatis-spring-boot.version>
-        <mybatis-baseservice.version>1.1.2-SNAPSHOT</mybatis-baseservice.version>
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <log4j-slf4j.version>1.7.21</log4j-slf4j.version>
-        <jsoup.version>1.10.2</jsoup.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
-    </parent>
-
-    <!--子模块-->
-    <modules>
-        <module>semantic-lab-commons</module>
-        <module>semantic-lab-service</module>
-        <module>semantic-lab-ont</module>
-        <module>semantic-lab-web</module>
-        <module>semantic-lab-workflow</module>
-        <module>semantic-lab-webservice</module>
-    </modules>
     <!--公共依赖：所有子模块都会加入此依赖-->
     <dependencies>
-
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <!--
+         https://github.com/lreis2415/egc-commons
+         maven 中央仓库中没有的
+         包含部分 spring 组件
+         -->
+        <dependency>
+            <groupId>org.egc</groupId>
+            <artifactId>commons</artifactId>
+            <version>${commons.version}</version>
         </dependency>
         <!--google通用类库-->
         <dependency>
@@ -84,157 +66,71 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <!--核心 POM，包含自动配置支持、日志库和对 YAML 配置文件的支持。-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <!--排除默认的logback-->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- 包括了slf4j-log4j12 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j</artifactId>
-            <version>1.3.8.RELEASE</version>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.16.0</version>
             <optional>true</optional>
         </dependency>
+        <!-- jena-core, jena-arq, jena-tdb and jena-iri and their dependencies.-->
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <type>pom</type>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-querybuilder</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-text</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-tdb2</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-jdbc-driver-tdb</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-geosparql</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-shacl</artifactId>
+            <version>${jena.version}</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
+        <dependency>
+            <groupId>org.topbraid</groupId>
+            <artifactId>shacl</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.galigator.openllet/openllet-jena -->
+        <dependency>
+            <groupId>com.github.galigator.openllet</groupId>
+            <artifactId>openllet-jena</artifactId>
+            <version>2.6.4</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
-
-            <!-- shiro：java安全框架 -->
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-spring-boot-web-starter</artifactId>
-                <version>${shiro.version}</version>
-            </dependency>
-            <!-- mybatis 官方的 spring-boot-starter -->
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.1.3</version>
-            </dependency>
-
-            <!--Adds production ready features such as metrics and monitoring.-->
-
-            <!-- Mybatis分页插件:包括了sql解析工具，jsqlparser.jar -->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.version}</version>
-            </dependency>
-            <!--mongodb-->
-            <!--<dependency>-->
-                <!--<groupId>org.mongodb</groupId>-->
-                <!--<artifactId>mongo-java-driver</artifactId>-->
-                <!--<version>${mongo-java-driver.version}</version>-->
-            <!--</dependency>-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-mongodb</artifactId>
-                <version>1.5.7.RELEASE</version>
-            </dependency>
-            <!-- morphia： mongodb ODM框架（Object Document Mapper） -->
-            <dependency>
-                <groupId>org.mongodb.morphia</groupId>
-                <artifactId>morphia</artifactId>
-                <version>${morphia.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>${jsoup.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-freemarker</artifactId>
-            </dependency>
-
             <!-- fastjson -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            <!--自定义的生成器插件，里面有BaseMapper、BaseService及其实现类，所以dao/service模块都需要-->
-            <dependency>
-                <groupId>com.vtech</groupId>
-                <artifactId>mybatis-baseservice</artifactId>
-                <version>${mybatis-baseservice.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>net.sf.ehcache</groupId>
-                <artifactId>ehcache-core</artifactId>
-                <version>${ehcache.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>${fileupload.version}</version>
-            </dependency>
-            <!--workflow-->
-            <!--https://spring.io/blog/2015/03/08/getting-started-with-activiti-and-spring-boot-->
-            <dependency>
-                <groupId>org.activiti</groupId>
-                <artifactId>activiti-spring-boot-starter-basic</artifactId>
-                <version>${activiti.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.activiti</groupId>
-                <artifactId>activiti-spring-boot-starter-rest-api</artifactId>
-                <version>${activiti.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.activiti</groupId>
-                <artifactId>activiti-json-converter</artifactId>
-                <version>${activiti.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.activiti</groupId>
-                <artifactId>activiti-spring-boot-starter-actuator</artifactId>
-                <version>${activiti.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.activiti</groupId>
-                <artifactId>activiti-modeler</artifactId>
-                <version>${activiti.version}</version>
-            </dependency>
-            <!--webservice-->
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-            <!-- Jetty is needed if you're are not using the CXFServlet -->
-            <!--<dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-transports-http-jetty</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>-->
-            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
@@ -250,71 +146,20 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-            <!-- Functionality to handle JSON input/output for JAX-RS implementations
-            (like Jersey and RESTeasy) using standard Jackson data binding. -->
-            <!--<dependency>
-                <groupId>com.fasterxml.jackson.jaxrs</groupId>
-                <artifactId>jackson-jaxrs-json-provider</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>-->
-            <!--包含了validation-api-->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>5.3.4.Final</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${psql.java8.version}</version>
-                <!--<scope>runtime</scope>-->
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <finalName>egc-semantic</finalName>
         <pluginManagement>
             <plugins>
-                <!--<plugin>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-maven-plugin</artifactId>
-                    <version>9.2.8.v20150217</version>
-                </plugin>-->
                 <!--自动化部署-->
                 <plugin>
                     <groupId>org.codehaus.cargo</groupId>
                     <artifactId>cargo-maven2-plugin</artifactId>
                     <version>1.6.3</version>
                 </plugin>
-                <!--package executable jar or war archives and run an application “in-place”.-->
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <dependencies>
-                        <!--Reload Java classes without restarting the container -->
-                        <dependency>
-                            <groupId>org.springframework</groupId>
-                            <artifactId>springloaded</artifactId>
-                            <version>1.2.7.RELEASE</version>
-                        </dependency>
-                    </dependencies>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
-
 </project>
