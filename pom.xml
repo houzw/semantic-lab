@@ -27,8 +27,8 @@
         <owlapi.version>5.0.2</owlapi.version>
         <fuseki.version>2.5.0</fuseki.version>
         <guava.version>19.0</guava.version>
-        <fastjson.version>1.2.5</fastjson.version>
-        <jackson.version>2.8.8</jackson.version>
+        <fastjson.version>1.2.31</fastjson.version>
+        <jackson.version>2.10.4</jackson.version>
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <log4j-slf4j.version>1.7.21</log4j-slf4j.version>

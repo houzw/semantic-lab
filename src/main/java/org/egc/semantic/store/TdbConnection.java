@@ -51,8 +51,7 @@ public class TdbConnection extends JenaConnection {
         TDBDriver driver = new TDBDriver();
         // driver must registered with the JDBC driver manager before connect
         registerJenaDriver(driver, "The TDBDriver cannot be registered");
-        TDBConnection tdbConnection = (TDBConnection) getConnection(getTdbConnectionUrl());
-        return tdbConnection;
+        return (TDBConnection) getConnection(getTdbConnectionUrl());
     }
 
     /**
