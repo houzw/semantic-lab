@@ -7,12 +7,11 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.sparql.function.library.localname;
 import org.apache.jena.vocabulary.OWL2;
 import org.egc.semantic.query.Ask;
 import org.egc.semantic.query.Select;
 import org.egc.semantic.util.StringUtil;
-import org.egc.semantic.rdf.RdfUtil;
+import org.egc.semantic.rdf.RdfUtils;
 import org.egc.semantic.rdf.Consts;
 
 import java.util.ArrayList;
@@ -87,7 +86,7 @@ public class SelectImpl implements Select {
         QueryExecution queryExec = QueryExecutionFactory.create(query, model);
         ResultSet results = queryExec.execSelect();
         // 只留下实例
-        OntModel om = RdfUtil.toOntModel(model);
+        OntModel om = RdfUtils.toOntModel(model);
 
         while (results.hasNext()) {
             solution = results.next();

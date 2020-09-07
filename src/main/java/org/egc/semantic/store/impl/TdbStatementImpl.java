@@ -4,7 +4,7 @@ import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.*;
 import org.egc.semantic.store.TdbStatement;
-import org.egc.semantic.util.OntologyUtil;
+import org.egc.semantic.util.OntologyUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class TdbStatementImpl implements TdbStatement
         try {
             model = ds.getNamedModel(modelName);
             model.begin();
-            Statement stmt = OntologyUtil.createStmt(model, subjectUri, propertyUri, objectUri);
+            Statement stmt = OntologyUtils.createStmt(model, subjectUri, propertyUri, objectUri);
             model.add(stmt);
             model.commit();
             ds.commit();
@@ -97,7 +97,7 @@ public class TdbStatementImpl implements TdbStatement
         ds.begin(ReadWrite.READ);
         try {
             model = ds.getNamedModel(modelName);
-            Selector selector = OntologyUtil.createSimpleSelector(model, subjectUri, propertyUri, objectUri);
+            Selector selector = OntologyUtils.createSimpleSelector(model, subjectUri, propertyUri, objectUri);
             StmtIterator iterator = model.listStatements(selector);
             Statement statement = null;
             while (iterator.hasNext()) {
@@ -129,7 +129,7 @@ public class TdbStatementImpl implements TdbStatement
         try {
             model = ds.getNamedModel(modelName);
             model.begin();
-            Statement stmt = OntologyUtil.createStmt(model, subject, property, object);
+            Statement stmt = OntologyUtils.createStmt(model, subject, property, object);
             model.remove(stmt);
             model.commit();
             ds.commit();

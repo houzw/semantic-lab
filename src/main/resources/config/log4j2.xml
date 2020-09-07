@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration status="OFF" monitorInterval="1800" strict="true">
+    <properties>
+        <property name="LOG_HOME">${web:rootDir}/logs</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--all/trace/debug/info/warn/error/fatal/off-->
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="%d{DEFAULT} %c{1} %p [%t] %m%n"/>
+        </Console>
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定是否清空-->
+        <File name="running-log" fileName="${LOG_HOME}/run.log" append="false">
+            <!-- 输出的日志格式 -->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <!--这个会打印出所有的信息 每个小时自动按年月日时进行压缩 -->
+        <RollingFile name="appLog"
+                     fileName="${LOG_HOME}/info.log"
+                     filePattern="${LOG_HOME}/info/info.log.%d{yyyy-MM-dd-HH}.log.gz"
+                     append="true"
+        >
+            <!-- 日志打印格式-->
+            <PatternLayout pattern="%d{DEFAULT} | %c{1} | %p | [%t] | %m%n"/>
+            <Policies>
+                <!-- 此处是按时间进行压缩 根据filePattern中的时间格式   每隔一个单位进行压缩-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="20 MB" />
+            </Policies>
+            <!--最多保留20个日志文件-->
+            <DefaultRolloverStrategy max="20" min="1" />
+        </RollingFile>
+
+        <!-- error日志格式 -->
+        <!--配置多个Rollingfile地址，还需要在root下添加appender-ref ref="asyncErrorLog"/> 只显示error级别的信息 -->
+        <RollingFile name="errorLog" fileName="${LOG_HOME}/error.log"
+                     filePattern="${LOG_HOME}/error/error.log.%d{yyyy-MM-dd}.log.gz">
+            <!-- 日志打印格式-->
+            <PatternLayout pattern="%d{DEFAULT} | %c{10} | %p | [%t] | %m%n"/>
+            <Policies>
+                <!-- 日志压缩触发条件 -->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <!-- 每次日志超过size配置的大小，按filePattern的配置的格式进行压缩>
+                 此处是按时间进行压缩 根据filePattern中的时间格式 每隔一个单位进行压缩 此处是按天压缩-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+    <!--定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+    <Loggers>
+        <!-- 配置日志的根节点，建立一个默认的root的logger，需要在root的level中指定输出的级别  -->
+        <Root level="ERROR">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="appLog"/>
+            <AppenderRef ref="errorLog"/>
+        </Root>
+        <!-- 针对指定的 source package 代码配置（若比默认配置的日志级别高，则相当于忽略默认配置的级别打印，实现去除“不必要”的日志）-->
+
+        <logger name="org.egc" level="ERROR" additivity="true"/>
+
+        <logger name="org.springframework" level="error" />
+        <logger name="java.sql.Connection" level="info" />
+        <logger name="java.sql.Statement" level="info" />
+        <logger name="java.sql.PreparedStatement" level="info" />
+        <logger name="java.sql.ResultSet" level="info" />
+        <logger name="java.sql.PreparedStatement" level="info" />
+        <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="info" />
+        <logger name="com.ibatis.common.jdbc.ScriptRunner" level="info" />
+        <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="info" />
+        <logger name="com.ibatis" level="info" />
+        <logger name="org.apache.http" level="info" />
+    </Loggers>
+</Configuration>

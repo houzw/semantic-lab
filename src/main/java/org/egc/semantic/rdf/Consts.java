@@ -20,4 +20,16 @@ public class Consts
     public static final String NS_JA = "http://jena.hpl.hp.com/2005/11/Assembler#";
     public static final String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
 
+
+    public static final String TOTAL = "total";
+	public static final String ROWS = "rows";
+
+	public static final String CLASS = "Class";
+	public static final String INDIVIDUAL = "NamedIndividual";
+	public static final String OTHER = "other";
+	public static final String ONTOLOGY = "Ontology";
+	// prefix:localname
+	public static final String SUB = "s";
+	public static final String OBJ = "o";
+	public static final String PRED = "p";
 }

@@ -136,8 +136,7 @@ public interface Select
         {
             Query query = QueryFactory.create(sparql);
             QueryExecution queryExec = QueryExecutionFactory.create(query, model);
-            ResultSet results = queryExec.execSelect();
-            return results;
+            return queryExec.execSelect();
         }
 
         public String[] getQueryVars(Query query)
