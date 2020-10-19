@@ -25,8 +25,6 @@ public abstract class JenaConnection {
     public static final String SPARQL = "sparql";
     public static final String UPDATE = "update";
     private static final Logger logger = LoggerFactory.getLogger(JenaConnection.class);
-    private Connection conn = null;
-
     /**
      * <pre>
      * Ensure that the driver we wish to use is registered
@@ -38,8 +36,7 @@ public abstract class JenaConnection {
      * @param msg    exception message
      * @throws SQLException the sql exception
      */
-    public void registerJenaDriver(JenaDriver driver, String msg) throws SQLException
-    {
+    public void registerJenaDriver(JenaDriver driver, String msg) throws SQLException {
         try {
             DriverManager.registerDriver(driver);
         } catch (SQLException e) {
@@ -55,10 +52,10 @@ public abstract class JenaConnection {
      * @return java.sql.Connection connection
      * @throws SQLException the sql exception
      */
-    public Connection getConnection(String url) throws SQLException
-    {
-        try {
-            conn = DriverManager.getConnection(url);
+    public Connection getConnection(String url) throws SQLException {
+       Connection conn = null;
+       try {
+           conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             logger.error("Open Jena Connection " + url + " failed!");
             throw new SQLException("Open Jena Connection " + url + " failed!", e);
@@ -72,8 +69,7 @@ public abstract class JenaConnection {
      * @param msg exception message
      * @throws SQLException the sql exception
      */
-    public void closeConnection(String msg) throws SQLException
-    {
+    public void closeConnection(Connection conn, String msg) throws SQLException {
         if (conn != null) {
             try {
                 conn.close();
@@ -94,7 +90,6 @@ public abstract class JenaConnection {
      * @return rdf connection
      */
     public RDFConnection rdfConnectionFuseki(String endpoint, String queryEndpoint, String updateEndpoint) {
-
         RDFConnectionRemoteBuilder builder = RDFConnectionFuseki.create().destination(endpoint);
         if (StringUtils.isBlank(queryEndpoint)) {
             queryEndpoint = SPARQL;

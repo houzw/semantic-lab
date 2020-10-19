@@ -15,7 +15,6 @@ import org.egc.semantic.store.TdbDataset;
 import org.egc.semantic.util.OntFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -34,7 +33,9 @@ import java.util.List;
 public class TdbDatasetImpl implements TdbDataset {
     final static Logger logger = LoggerFactory.getLogger(TdbDatasetImpl.class);
 
-    // 必须close
+    /**
+     * 必须close
+     */
     Dataset ds = null;
 
     // needed for spring
@@ -68,8 +69,7 @@ public class TdbDatasetImpl implements TdbDataset {
         ds.begin(ReadWrite.WRITE);
         try {
             if (ds.containsNamedModel(modelName)) {
-                if (isOverride)// 覆盖
-                {
+                if (isOverride){// 覆盖
                     removeModel(modelName);
                     loadModel(modelName, sourcePath, false);
                 }

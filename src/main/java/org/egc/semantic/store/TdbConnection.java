@@ -6,8 +6,6 @@ import org.apache.jena.jdbc.tdb.connections.TDBConnection;
 import org.egc.commons.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -24,7 +22,14 @@ import java.util.Properties;
 public class TdbConnection extends JenaConnection {
     private static final Logger logger = LoggerFactory.getLogger(TdbConnection.class);
     private Connection conn = null;
-    private String connectionUrl = "";
+
+    public static TdbConnection createTdbConnection() {
+        return new TdbConnection();
+    }
+
+    private TdbConnection() {
+
+    }
 
     /**
      * Persistent disk backed RDF database
@@ -35,10 +40,9 @@ public class TdbConnection extends JenaConnection {
      */
     public String getTdbConnectionUrl() {
         Properties properties = PropertiesUtil.readPropertiesFromConfig("semantic");
-        connectionUrl = JenaDriver.DRIVER_PREFIX + TDBDriver.TDB_DRIVER_PREFIX
+        return JenaDriver.DRIVER_PREFIX + TDBDriver.TDB_DRIVER_PREFIX
                 + TDBDriver.PARAM_LOCATION + "=" + properties.getProperty("jena.tdb.dbLocation")
                 + TDBDriver.PARAM_MUST_EXIST + "=" + properties.getProperty("jena.jdbc.tdb.must-exist");
-        return connectionUrl;
     }
 
     /**
@@ -47,11 +51,12 @@ public class TdbConnection extends JenaConnection {
      * @return the tdb connection
      * @throws SQLException the sql exception
      */
-    public TDBConnection getTdbConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         TDBDriver driver = new TDBDriver();
         // driver must registered with the JDBC driver manager before connect
         registerJenaDriver(driver, "The TDBDriver cannot be registered");
-        return (TDBConnection) getConnection(getTdbConnectionUrl());
+        this.conn = getConnection(getTdbConnectionUrl());
+        return this.conn;
     }
 
     /**
@@ -59,11 +64,9 @@ public class TdbConnection extends JenaConnection {
      *
      * @throws SQLException the sql exception
      */
-    public void closeTdbConnection() throws SQLException {
+    public void closeConnection() throws SQLException {
         String msg = "Close TDB JDBC Connection failed";
-        logger.error(msg);
-        closeConnection(msg);
+        closeConnection(this.conn, msg);
     }
-
 
 }
