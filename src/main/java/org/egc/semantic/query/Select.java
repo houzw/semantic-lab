@@ -16,8 +16,7 @@ import java.util.List;
  * @author houzhiwei
  * @date 2017/4/17 16:31
  */
-public interface Select
-{
+public interface Select {
     /**
      * 获得实例名称
      *
@@ -111,8 +110,7 @@ public interface Select
      *
      * @author houzhiwei
      */
-    class BaseSelect
-    {
+    class BaseSelect {
         /**
          * Exec select json string.
          *
@@ -120,8 +118,7 @@ public interface Select
          * @param model  the model
          * @return the string
          */
-        public String execSelectJSON(String sparql, Model model)
-        {
+        public String execSelectJSON(String sparql, Model model) {
             try {
                 ResultSet results = execSelect(sparql, model);
                 ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -132,15 +129,13 @@ public interface Select
             }
         }
 
-        public ResultSet execSelect(String sparql, Model model)
-        {
+        public ResultSet execSelect(String sparql, Model model) {
             Query query = QueryFactory.create(sparql);
             QueryExecution queryExec = QueryExecutionFactory.create(query, model);
             return queryExec.execSelect();
         }
 
-        public String[] getQueryVars(Query query)
-        {
+        public String[] getQueryVars(Query query) {
             List<Var> vars = query.getProjectVars();
             String[] varArr = new String[vars.size()];
             for (int i = 0, len = vars.size(); i < len; i++) {

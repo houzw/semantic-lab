@@ -13,6 +13,7 @@ import org.apache.jena.vocabulary.*;
  * @date 2017 /4/17 16:36
  */
 public class RdfUtils {
+
     /**
      * 转换为OntModel
      *
