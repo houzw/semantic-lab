@@ -1,0 +1,36 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX process:  <http://www.egc.org/ont/gis/process#>
+PREFIX dcterms:  <http://purl.org/dc/terms/> .
+PREFIX context:  <http://www.egc.org/ont/context#> .
+PREFIX cyber:  <http://www.egc.org/ont/gis/cyber#> .
+
+SELECT ?tool
+WHERE {
+    ?tool a     process:GeoprocessingFunctionality;
+          a     ?cls;
+          skos:prefLabel ?label;
+          dcterms:subject ?keyword;
+          #cyber:inputData ?input;
+          cyber:outputData ?output;
+          context:usedByTask ?task.
+
+    ?cls  skos:prefLabel ?clsLabel.
+    ?task  skos:prefLabel ?taskLabel.
+
+    OPTIONAL {
+    ?tool context:primaryApplicationCategory ?app1;
+          context:secondaryApplicationCategory ?app2.
+    }
+    OPTIONAL {
+    ?tool owl:sameAs ?sameTool.
+    ?sameTool skos:prefLabel ?sameLabel.
+    }
+
+    ?output process:parameterName ?outputName.
+    FILTER (REGEX(?label, "${query}","i") || REGEX(?keyword, "${query}","i")
+    || REGEX(?sameLabel, "${query}","i")  || REGEX(STRBEFORE(?taskLabel,"_task"), "${query}","i"))
+    || REGEX(?app1, "${query}","i")  || REGEX(?app2, "${query}","i"))
+    || REGEX(?cls, "${query}","i")
+}
+LIMIT 10

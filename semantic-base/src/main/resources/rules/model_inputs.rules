@@ -1,0 +1,22 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix gcmd:  <https://gcmdservices.gsfc.nasa.gov/kms/concept/>
+@prefix dct:   <http://purl.org/dc/terms/>
+@prefix data:  <http://www.egc.org/ont/data#>
+@prefix process:  <http://www.egc.org/ont/process#>
+@prefix owl:   <http://www.w3.org/2002/07/owl#>
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#>
+@prefix dcat:  <http://www.w3.org/ns/dcat#>
+@prefix prov:  <http://www.w3.org/ns/prov#>
+@prefix foaf:  <http://xmlns.com/foaf/0.1/>
+@prefix ds:    <http://www.egc.org/ont/datasource#>
+@prefix sh:    <http://www.w3.org/ns/shacl#>
+@prefix model: <http://www.egc.org/ont/model#>
+@prefix soft: <http://www.egc.org/ont/soft#>
+@prefix context: <http://www.egc.org/ont/context#>
+
+
+#
+# [r_dem_runoff: (?a a context:GeographicModel) (?a context:applicationPurpose context:runoff)(?a process:hasInputSource ?d) (?d dct:subject gcmd:dem)
+-> (?d context:recommendedDataset ds:AW3D30)]

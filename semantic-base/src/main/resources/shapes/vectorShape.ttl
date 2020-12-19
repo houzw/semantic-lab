@@ -1,0 +1,40 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dc:  <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix kms:  <http://gcmd.gsfc.nasa.gov/kms#> .
+@prefix gcmd:  <https://gcmdservices.gsfc.nasa.gov/kms/concept/> .
+@prefix data:  <http://www.egc.org/ont/data#> .
+@prefix datasource:  <http://www.egc.org/ont/datasource#> .
+@prefix model:  <http://www.egc.org/ont/model/geospatial#> .
+@prefix cyber:  <http://www.egc.org/ont/gis/cyber#> .
+@prefix props:  <http://www.egc.org/ont/base/props#> .
+@prefix context:  <http://www.egc.org/ont/context#> .
+@prefix taudem:  <http://www.egc.org/ont/process/taudem#> .
+@prefix whitebox:  <http://www.egc.org/ont/process/whitebox#> .
+@prefix saga:  <http://www.egc.org/ont/process/saga#> .
+@prefix arcgis:  <http://www.egc.org/ont/process/arcgis#> .
+@prefix grass:  <http://www.egc.org/ont/process/grass#> .
+@prefix otb:  <http://www.egc.org/ont/process/otb#> .
+@prefix cf:  <http://www.egc.org/ont/vocab/cf#> .
+@prefix dta:  <http://www.egc.org/ont/domain/dta#> .
+@prefix task:  <http://www.egc.org/ont/context/task#> .
+@prefix process:  <http://www.egc.org/ont/gis/process#> .
+
+data:vectorShape    a               sh:NodeShape;
+                    sh:targetClass  data:VectorData;
+                    sh:message "Input data must have a spatial reference system (SRS)  or coordinate reference system (CRS) definition" ;
+                    sh:severity  sh:Violation;
+                    sh:property [
+                        sh:path     process:hasCRS;
+                        sh:minCount 1;
+                        sh:maxCount 1;
+                        sh:datatype xsd:string ;
+                    ];
+
+.

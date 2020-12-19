@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vmap</groupId>
+    <groupId>org.egc</groupId>
     <artifactId>semantic-lab</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <developers>
         <developer>
@@ -15,6 +15,12 @@
             <organization>LREIS,IGSNRR,CAS</organization>
         </developer>
     </developers>
+    <modules>
+        <module>semantic-base</module>
+        <module>semantic-linked-geo</module>
+        <module>semantic-modeling</module>
+        <module>semantic-owlapi</module>
+    </modules>
 
     <!--统一设置项目版本-->
     <properties>
@@ -22,18 +28,18 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.version>1.0-SNAPSHOT</project.version>
         <java.version>1.8</java.version>
-        <jena.version>3.16.0</jena.version>
+        <jena.version>3.17.0</jena.version>
         <commons.version>2.1-SNAPSHOT</commons.version>
         <owlapi.version>5.0.2</owlapi.version>
         <fuseki.version>2.5.0</fuseki.version>
         <guava.version>28.0-jre</guava.version>
-        <fastjson.version>1.2.31</fastjson.version>
+        <fastjson.version>1.2.75</fastjson.version>
         <jackson.version>2.10.4</jackson.version>
         <slf4j.version>1.7.30</slf4j.version>
         <log4j.version>2.13.2</log4j.version>
-<!--        <log4j-slf4j.version>1.7.21</log4j-slf4j.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8
+        </project.reporting.outputEncoding>
     </properties>
 
     <!--公共依赖：所有子模块都会加入此依赖-->
@@ -43,22 +49,6 @@
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
             <scope>test</scope>
-        </dependency>
-        <!--
-         https://github.com/lreis2415/egc-commons
-         maven 中央仓库中没有的
-         包含部分 spring 组件
-         -->
-        <dependency>
-            <groupId>org.egc</groupId>
-            <artifactId>commons</artifactId>
-            <version>${commons.version}</version>
-        </dependency>
-        <!--google通用类库-->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
         </dependency>
         <!--slf4j-->
         <dependency>
@@ -71,6 +61,7 @@
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+
         <!-- log4j和log4j2的连接包 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -87,75 +78,194 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-web</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>org.apache.logging.log4j</groupId>
+             <artifactId>log4j-web</artifactId>
+             <version>${log4j.version}</version>
+         </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.0</version>
             <optional>true</optional>
         </dependency>
-        <!-- jena-core, jena-arq, jena-tdb and jena-iri and their dependencies.-->
+        <!--google通用类库-->
         <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>apache-jena-libs</artifactId>
-            <type>pom</type>
-            <version>${jena.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-querybuilder</artifactId>
-            <version>${jena.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-text</artifactId>
-            <version>${jena.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-tdb2</artifactId>
-            <version>${jena.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-jdbc-driver-tdb</artifactId>
-            <version>${jena.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-geosparql</artifactId>
-            <version>${jena.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-shacl</artifactId>
-            <version>${jena.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
-        <dependency>
-            <groupId>org.topbraid</groupId>
-            <artifactId>shacl</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.galigator.openllet/openllet-jena -->
-        <dependency>
-            <groupId>com.github.galigator.openllet</groupId>
-            <artifactId>openllet-jena</artifactId>
-            <version>2.6.4</version>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <!--
+                    https://github.com/lreis2415/egc-commons
+                    maven 中央仓库中没有的
+                    包含部分 spring 组件
+                    -->
+            <dependency>
+                <groupId>org.egc</groupId>
+                <artifactId>commons</artifactId>
+                <version>${commons.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.geotools</groupId>
+                        <artifactId>gt-epsg-hsql</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.geotools</groupId>
+                        <artifactId>gt-process-raster</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.geotools</groupId>
+                        <artifactId>gt-geotiff</artifactId>
+                    </exclusion>
+                    <!--上面的与jena-geosparql冲突-->
+                    <!--下面的因为用不到或在本项目中添加了，因此排除-->
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context-support</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.jsonwebtoken</groupId>
+                        <artifactId>jjwt</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.shiro</groupId>
+                        <artifactId>shiro-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.gdal</groupId>
+                        <artifactId>gdal</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>it.geosolutions</groupId>
+                        <artifactId>geoserver-manager</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- jena-core, jena-arq, jena-tdb and jena-iri and their dependencies.-->
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>apache-jena-libs</artifactId>
+                <type>pom</type>
+                <version>${jena.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-querybuilder</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-text</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-tdb2</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-jdbc-driver-tdb</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-core</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-arq</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <!--   其中的Apache SIS与GeoTools存在冲突，
+            因此需要排除commons中带的GeoTools库     -->
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-geosparql</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+            <!--   jena-geosparql 需要     -->
+            <dependency>
+                <groupId>org.apache.sis.non-free</groupId>
+                <artifactId>sis-embedded-data</artifactId>
+                <version>1.0</version>
+                <!--  <scope>runtime</scope>-->
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.sis.core/sis-referencing -->
+            <!-- https://mvnrepository.com/artifact/com.ontotext.graphdb/graphdb-free-runtime -->
+            <dependency>
+                <groupId>com.ontotext.graphdb</groupId>
+                <artifactId>graphdb-free-runtime</artifactId>
+                <version>9.0.0</version>
+            </dependency>
+            <!-- <dependency>
+                 <groupId>io.github.galbiston</groupId>
+                 <artifactId>geosparql-jena</artifactId>
+                 <version>1.1.2</version>
+             </dependency>-->
+            <!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-queryalgebra-geosparql -->
+            <!--<dependency>
+                <groupId>org.eclipse.rdf4j</groupId>
+                <artifactId>rdf4j-queryalgebra-geosparql</artifactId>
+                <version>3.5.0</version>
+            </dependency>-->
+            <dependency>
+                <groupId>org.eclipse.rdf4j</groupId>
+                <artifactId>rdf4j-model</artifactId>
+                <version>3.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.rdf4j</groupId>
+                <artifactId>rdf4j-rio-turtle</artifactId>
+                <version>3.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-shacl</artifactId>
+                <version>${jena.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
+            <dependency>
+                <groupId>org.topbraid</groupId>
+                <artifactId>shacl</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.github.galigator.openllet/openllet-jena -->
+            <dependency>
+                <groupId>com.github.galigator.openllet</groupId>
+                <artifactId>openllet-jena</artifactId>
+                <version>2.6.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derby</artifactId>
+                <version>10.14.2.0</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/net.sourceforge.owlapi/owlapi-distribution -->
+            <dependency>
+                <groupId>net.sourceforge.owlapi</groupId>
+                <artifactId>owlapi-distribution</artifactId>
+                <version>5.1.16</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>4.2.0.RELEASE</version>
+            </dependency>
+
             <!-- fastjson -->
             <dependency>
                 <groupId>com.alibaba</groupId>
