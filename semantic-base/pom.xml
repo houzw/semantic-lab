@@ -64,7 +64,8 @@
             <groupId>org.apache.sis.non-free</groupId>
             <artifactId>sis-embedded-data</artifactId>
             <!--  <scope>runtime</scope>-->
-        </dependency> <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
         <dependency>
             <groupId>org.topbraid</groupId>
             <artifactId>shacl</artifactId>

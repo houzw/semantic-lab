@@ -3,6 +3,8 @@ package org.egc.semantic.vocab;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.vocabulary.DCTerms;
+import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 
 /**
@@ -19,11 +21,14 @@ public class InspireVocabulary {
     public static final String LICENCE_NS = "http://publications.europa.eu/resource/authority/licence/";
     //General Multilingual Environmental Thesaurus
     public static final String GEMET_NS = "https://www.eionet.europa.eu/gemet/concept/";
+    public static final String DISTRIBUTION_TYPE_NS = "http://publications.europa.eu/resource/authority/distribution-type/";
 
     public static final Resource WEB_SERVICE = createDistributionType("WEB_SERVICE");
     public static final Resource DOWNLOADABLE_FILE = createDistributionType("DOWNLOADABLE_FILE");
     public static final Resource VISUALIZATION = createDistributionType("VISUALIZATION");
-    //临时数据
+    /**
+     * 临时数据
+     */
     public static final Resource PROVISIONAL_DATA = createDistributionType("OP_DATPRO");
     //e.g., RSS feed
     public static final Resource FEED_INFO = createDistributionType("FEED_INFO");
@@ -76,23 +81,29 @@ public class InspireVocabulary {
     public static final Resource serviceCategory_CoverageAccessService = createSpatialDataServiceCategory("infoCoverageAccessService");
 
     public static Resource createDistributionType(String type) {
-        return VOCAB.createResource("http://publications.europa.eu/resource/authority/distribution-type/" + type);
+        return VOCAB.createResource(DISTRIBUTION_TYPE_NS + type);
     }
 
     public static Resource createTopicCategory(String localName) {
         return VOCAB.createResource(TC_NS + localName);
     }
 
+    public static final String SpatialRepresentation_NS = "https://inspire.ec.europa.eu/metadata-codelist/SpatialRepresentationTypeCode/";
+
     public static Resource createSpatialRepresentationType(String localName) {
-        return VOCAB.createResource("https://inspire.ec.europa.eu/metadata-codelist/SpatialRepresentationTypeCode/" + localName);
+        return VOCAB.createResource(SpatialRepresentation_NS + localName);
     }
+
+    public static final String SpatialDataService_NS = "https://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/";
 
     public static Resource createSpatialDataServiceType(String localName) {
-        return VOCAB.createResource("https://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceType/" + localName);
+        return VOCAB.createResource(SpatialDataService_NS + localName);
     }
 
+    public static final String SpatialDataServiceCategory_NS = "https://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceCategory/";
+
     public static Resource createSpatialDataServiceCategory(String localName) {
-        return VOCAB.createResource("https://inspire.ec.europa.eu/metadata-codelist/SpatialDataServiceCategory/" + localName);
+        return VOCAB.createResource(SpatialDataServiceCategory_NS + localName);
     }
 
     /******************************************
@@ -141,6 +152,7 @@ public class InspireVocabulary {
      * The constant CHN for China.
      */
     public static final Resource Country_CHN = createCountry("CHN");
+    public static final String COUNTRY_NS = "http://publications.europa.eu/resource/authority/country/";
 
     /**
      * Create country resource.
@@ -151,7 +163,22 @@ public class InspireVocabulary {
      * @return the resource
      */
     public static Resource createCountry(String localName) {
-        return VOCAB.createResource("http://publications.europa.eu/resource/authority/country/" + localName);
+        return VOCAB.createResource(COUNTRY_NS + localName);
+    }
+
+    public static Resource createLanguage(String lang) {
+        Resource l = VOCAB.createResource("http://publications.europa.eu/resource/authority/language/" + lang);
+        l.addProperty(RDF.type, DCTerms.LinguisticSystem);
+        return l;
+    }
+
+    public static final Resource langENG = createLanguage("ENG");
+    public static final Resource langCHN = createLanguage("CMN");
+
+    public static Resource createLicense(String licence) {
+        Resource l = VOCAB.createResource("http://publications.europa.eu/resource/authority/licence/" + licence);
+        l.addProperty(RDF.type, DCTerms.LinguisticSystem);
+        return l;
     }
 
 }

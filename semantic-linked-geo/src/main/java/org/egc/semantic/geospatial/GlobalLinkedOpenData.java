@@ -19,6 +19,7 @@ public class GlobalLinkedOpenData {
 
     public static final String FAO = "Food And Agriculture Organization";
     public static final String NASA = "The National Aeronautics and Space Administration";
+    public static final String USGS = "U.S. Geological Survey";
 
     public Model getModel() {
         digitalSoilMapOfTheWorld();
@@ -39,19 +40,9 @@ public class GlobalLinkedOpenData {
         return new GlobalLinkedOpenData();
     }
 
-    public DCATDistribution dsmwDistribution(DCATDataset dsm) {
-        DCATDistribution dist = new DCATDistribution(model,
-                "http://localhost:8088/geoserver/ows?service=WCS&version=2.0.1&request=GetCapabilities",
-                "dsmw_wcs", "Digital Soil Map of the World WCS");
-        dist.setDescription("Global Soil Map EGC Web Coverage Service (WCS) - GetCapabilities", "en");
-        dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
-        dist.setFormat(DataOnt.FORMAT_API);
-        //coverageId
-        dist.setIdentifier("global__soil");
-        dist.setSpatialResolutionInDegrees(BigDecimal.valueOf(0.06751287711555500892));
-        dist.setAccessService(globalService(dsm));
-        return dist;
-    }
+    /************************************************
+     *          Digital Soil Map of the World
+     * ***********************************************/
 
     public void digitalSoilMapOfTheWorld() {
         DCATDataset dsm = new DCATDataset(model, "dsmw", "The Digital Soil Map of the World",
@@ -59,41 +50,78 @@ public class GlobalLinkedOpenData {
         dsm.setKeywords("soil", "FAO", "digital soil map", "world");
         dsm.setDescriptionUrl("https://swat.tamu.edu/media/116412/readme.pdf");
         dsm.setDescriptionUrl("http://www.fao.org/land-water/land/land-governance/land-resources-planning-toolbox/category/details/en/c/1026564/");
-        dsm.setIssued("2003-01-01");
+        dsm.setIssued(200, 1, 1);
         dsm.setPrefLabel("FAO Digital Soil Map of the World", "en");
-        dsm.setThemes(GeoVocabulary.GCMD_SOIL, InspireVocabulary.Soil);
+        dsm.setThemes(GeoVocabulary.GCMD_SOIL, InspireVocabulary.Soil, InspireVocabulary.gemet_soil);
         dsm.setVersionInfo("3.6");
-        //SIS 有问题
         dsm.setSpatialBbox(model, -180, -56.57045621787, 180, 84.5989698307553, 4326);
-        System.out.println(dsm.getSpatialString());
-        //
         dsm.setOwner(FAO, "en");
-//        System.out.println(dsm.getSpatialBbox().getProperty(GeoDCAT.locn_geometry));
         dsm.setSpatialIdentifier(GeoVocabulary.GCMD_GLOBAL_LAND);
         dsm.setDistribution(dsmwDistribution(dsm));
     }
 
+    public DCATDistribution dsmwDistribution(DCATDataset dsm) {
+        DCATDistribution dist = new DCATDistribution(model,
+                "http://localhost:8088/geoserver/ows?service=WCS&version=2.0.1&request=GetCapabilities",
+                DataOnt.FORMAT_API, "dsmw_wcs");
+        dist.setDescription("Global Soil Map EGC Web Coverage Service (WCS) - GetCapabilities", "en");
+        dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
+        dist.setTitle("Digital Soil Map of the World WCS");
+        //coverageId
+        dist.setIdentifier("global__soil");
+        dist.setSpatialResolutionInDegrees(BigDecimal.valueOf(0.06751287711555500892));
+        dist.setAccessService(globalService(dsm));
+        return dist;
+    }
+
+    /***********************************************
+     *        Harmonized World Soil Database
+     * *********************************************/
+
     public void hwsd() {
-        DCATDataset dsm = new DCATDataset(model, "hwsd", "Harmonized World Soil Database",
+        DCATDataset hwsd = new DCATDataset(model, "hwsd", "Harmonized World Soil Database",
                 "The HWSD is a 30 arc-second raster database with over" +
                         " 16000 different soil mapping units that combines existing" +
                         " regional and national updates of soil information worldwide (SOTER, ESD, Soil Map of China, WISE)" +
                         " with the information contained within the " +
-                        "1:5 000 000 scale FAO-UNESCO Soil Map of the World (FAO, 19711981). ");
-        dsm.setKeywords("soil", "FAO", "digital soil map", "world");
-        dsm.setDescriptionUrl("http://webarchive.iiasa.ac.at/Research/LUC/External-World-soil-database/HTML/index.html?sb=1");
-        dsm.setIssued("2012-03-07");
-        dsm.setPrefLabel("Harmonized World Soil Database v 1.2", "en");
-        dsm.setThemes(GeoVocabulary.GCMD_SOIL, InspireVocabulary.Soil);
-        dsm.setVersionInfo("1.21");
-        //SIS 有问题
-        dsm.setSpatialBbox(model, -180, -56.57045621787, 180, 84.5989698307553, 4326);
-        System.out.println(dsm.getSpatialString());
-        dsm.setCitation("FAO/IIASA/ISRIC/ISSCAS/JRC, 2012. Harmonized World Soil Database (version 1.2). FAO, Rome, Italy and IIASA, Laxenburg, Austria.");
-        dsm.setOwner(FAO, "en");
-        dsm.setSpatialIdentifier(GeoVocabulary.GCMD_GLOBAL_LAND);
-        dsm.setDistribution(dsmwDistribution(dsm));
+                        "1:5 000 000 scale FAO-UNESCO Soil Map of the World (FAO, 19711981).");
+        hwsd.setKeywords("soil", "FAO", "digital soil map", "world");
+        hwsd.setDescriptionUrl("http://www.fao.org/soils-portal/soil-survey/soil-maps-and-databases/harmonized-world-soil-database-v12/en/");
+        //hwsd.setDescriptionUrl("http://webarchive.iiasa.ac.at/Research/LUC/External-World-soil-database/HTML/index.html?sb=1");
+        hwsd.setIssued(2012, 3, 7);
+        hwsd.setPrefLabel("Harmonized World Soil Database v 1.2", "en");
+        hwsd.setThemes(GeoVocabulary.GCMD_SOIL, InspireVocabulary.Soil, InspireVocabulary.gemet_soil);
+        hwsd.setVersionInfo("1.21");
+        hwsd.setSpatialBbox(model, -180, -56.57045621787, 180, 84.5989698307553, 4326);
+        hwsd.setCitation("FAO/IIASA/ISRIC/ISSCAS/JRC, 2012. Harmonized World Soil Database (version 1.2). FAO, Rome, Italy and IIASA, Laxenburg, Austria.");
+        hwsd.setOwner(FAO, "en");
+        hwsd.setSpatialIdentifier(GeoVocabulary.GCMD_GLOBAL_LAND);
+        hwsd.setDistribution(hwsdFaoDistribution(hwsd));
     }
+
+
+    public DCATDistribution hwsdFaoDistribution(DCATDataset ds) {
+        //FORMAT_EHdr bil
+        DCATDistribution dist = new DCATDistribution(model,
+                "http://www.fao.org/soils-portal/soil-survey/soil-maps-and-databases/harmonized-world-soil-database-v12/en/",
+                DataOnt.FORMAT_EHdr, "hwsd_fao");
+        dist.setDescription("Download viewer & data (only soil types), database (.mdb), HWSD Raster, and Technical Report and Instructions", "en");
+        dist.setDistributionType(InspireVocabulary.DOWNLOADABLE_FILE);
+        dist.setAccessRights(DataOnt.no_limitation);
+        dist.setDownloadUrl("http://www.fao.org/fileadmin/user_upload/soils/HWSD%20Viewer/HWSD_viewer_setup.exe");
+        dist.setDownloadUrl("http://www.fao.org/fileadmin/user_upload/soils/HWSD%20Viewer/HWSD.zip");
+        dist.setDownloadUrl("http://www.fao.org/fileadmin/user_upload/soils/HWSD%20Viewer/HWSD_RASTER.zip");
+        dist.setTitle("Harmonized World Soil Database - FAO SOILS PORTAL");
+        dist.setCompressFormat(DataOnt.APP_ZIP);
+        //30 arc second
+        dist.setSpatialResolutionInDegrees(BigDecimal.valueOf(0.477464829275686));
+//        dist.setAccessService(globalService(ds));
+        return dist;
+    }
+
+    /***********************************************
+     *       Global Land Cover Characteristics
+     * *********************************************/
 
     public void glccLanuse() {
         DCATDataset landuse = new DCATDataset(model, "glcc", "Global Land Cover Characteristics",
@@ -105,29 +133,32 @@ public class GlobalLinkedOpenData {
         landuse.setThemes(GeoVocabulary.GCMD_Landuse, InspireVocabulary.Land_use, InspireVocabulary.Land_cover);
         landuse.setVersionInfo("Version 2");
         //TODO
-        landuse.setSpatialBbox(model, -180.20253863134997, -56.57045621787, 180.58627667417727, 84.5989698307553, 4326);
-        landuse.setOwner("USGS", "en");
-//        System.out.println(dsm.getSpatialBbox().getProperty(GeoDCAT.locn_geometry));
+        landuse.setSpatialBbox(model, -180, -56.57045621787, 180, 84.5989698307553, 4326);
+        landuse.setOwner(USGS, "en");
         landuse.setSpatialIdentifier(GeoVocabulary.GCMD_GLOBAL_LAND);
-
         landuse.setDistribution(landuseDistribution(landuse));
-
     }
 
     public DCATDistribution landuseDistribution(DCATDataset landuse) {
         DCATDistribution land_dist = new DCATDistribution(model,
                 "http://localhost:8088/geoserver/ows?service=WCS&version=2.0.1&request=GetCapabilities",
-                "glcc_wcs", "Global Land Cover Characterization");
+                DataOnt.FORMAT_API, "glcc_wcs");
+        land_dist.setTitle("Global Land Cover Characterization");
         land_dist.setDescription("Global Land Cover Map EGC Web Coverage Service (WCS) - GetCapabilities", "en");
         land_dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
-        land_dist.setFormat(DataOnt.FORMAT_API);
+        land_dist.addFormat(DataOnt.FORMAT_API);
         land_dist.setPrefLabel("USGS Global Land Cover Characterization (GLCC) of the World WCS", "en");
         land_dist.setSpatialResolutionInMeters(BigDecimal.valueOf(400));
         land_dist.setAccessService(globalService(landuse));
+        land_dist.setAccessRights(DataOnt.no_limitation);
         //coverageId
         land_dist.setIdentifier("global__landuse");
         return land_dist;
     }
+
+    /***********************************************
+     *       global data web coverage service
+     * *********************************************/
 
     public DCATDataService globalService(DCATDataset... dataset) {
         DCATDataService service = new DCATDataService(model, "http://localhost:8088/geoserver/ows",
@@ -144,7 +175,10 @@ public class GlobalLinkedOpenData {
     }
 
 
-    /******************************************************************************************************/
+    /***********************************************
+     *       global data web coverage service
+     * *********************************************/
+
     String openTopo = "https://www.opentopography.org/developers#API";
 
     public void AW3D30() {
@@ -162,17 +196,31 @@ public class GlobalLinkedOpenData {
                         "education, as well as the private service sector that uses geospatial information.");
         aw3d30.setKeywords("AW3D30", "DEM", "digital elevation model", "world", "ALOS");
         aw3d30.setDescriptionUrl("https://www.eorc.jaxa.jp/ALOS/en/aw3d30/");
-        aw3d30.setIssued("2006-01-01");
+        aw3d30.setIssued(2006, 1, 1);
         aw3d30.setPrefLabel("The Shuttle Radar Topography Mission (SRTM)", "en");
         aw3d30.setThemes(GeoVocabulary.GCMD_DEM, InspireVocabulary.DEM, InspireVocabulary.gemet_altitude);
         aw3d30.setVersionInfo("3.0");
         //SIS 有问题
         aw3d30.setSpatialBbox(model, -180, -60, 180, 60, 4326);
-        System.out.println(aw3d30.getSpatialString());
         //
         aw3d30.setOwner("The National Aeronautics and Space Administration", "en");
         aw3d30.setSpatialIdentifier(GeoVocabulary.GCMD_GLOBAL_LAND);
-        aw3d30.setDistribution(srtmGL1Distribution(aw3d30));
+        aw3d30.setDistribution(aw3d30Distribution(aw3d30));
+    }
+
+    public DCATDistribution aw3d30Distribution(DCATDataset aw3d30) {
+        DCATDistribution dist = new DCATDistribution(model, openTopo, DataOnt.FORMAT_OpenAPI, "aw3d30");
+        dist.setTitle("ALOS World 3D - 30m");
+        dist.setDescription("ALOS World 3D - 30m", "en");
+        dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
+        dist.setDescribedBy("https://portal.opentopography.org/raster?opentopoID=OTALOS.112016.4326.2");
+        dist.setDescribedByType(DataOnt.APP_OPENAPI_JSON);
+        dist.addFormat(DataOnt.FORMAT_OpenAPI);
+        dist.setSpatialResolutionInMeters(BigDecimal.valueOf(30));
+        dist.setAccessService(openTopographyAPI(aw3d30));
+        dist.setIdentifier("AW3D30");
+        dist.setAccessRights(DataOnt.no_limitation);
+        return dist;
     }
 
     public void srtm() {
@@ -184,7 +232,7 @@ public class GlobalLinkedOpenData {
         srtm.setIdentifier("SRTM");
         srtm.setKeywords("SRTM", "DEM", "digital elevation model", "world");
         srtm.setDescriptionUrl("https://www2.jpl.nasa.gov/srtm/");
-        srtm.setIssued("2000-02-11");
+        srtm.setIssued(2000, 2, 11);
         srtm.setPrefLabel("The Shuttle Radar Topography Mission (SRTM)", "en");
         srtm.setThemes(GeoVocabulary.GCMD_DEM, InspireVocabulary.DEM, InspireVocabulary.gemet_altitude);
         srtm.setVersionInfo("Version 3");
@@ -193,44 +241,36 @@ public class GlobalLinkedOpenData {
         srtm.setOwner(NASA, "en");
         srtm.setSpatialIdentifier(GeoVocabulary.GCMD_GLOBAL_LAND);
         srtm.setDistribution(srtmGL1Distribution(srtm));
+        srtm.setDistribution(srtmGL3Distribution(srtm));
     }
 
-    public DCATDistribution aw3d30Distribution(DCATDataset aw3d30) {
-        DCATDistribution dist = new DCATDistribution(model, openTopo, "aw3d30", "ALOS World 3D - 30m");
-        dist.setDescription("ALOS World 3D - 30m", "en");
-        dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
-        dist.setDescribedBy("https://portal.opentopography.org/raster?opentopoID=OTALOS.112016.4326.2");
-        dist.setDescribedByType(DataOnt.APP_OPENAPI_JSON);
-        dist.setFormat(DataOnt.FORMAT_OpenAPI);
-        dist.setSpatialResolutionInMeters(BigDecimal.valueOf(30));
-        dist.setAccessService(openTopographyAPI(aw3d30));
-        dist.setIdentifier("AW3D30");
-        return dist;
-    }
 
     public DCATDistribution srtmGL1Distribution(DCATDataset srtmgl1) {
-        DCATDistribution dist = new DCATDistribution(model, openTopo, "srtmgl1", "SRTM GL1");
+        DCATDistribution dist = new DCATDistribution(model, openTopo, DataOnt.FORMAT_OpenAPI, "srtmgl1");
+        dist.setTitle("SRTM GL1");
         dist.setDescription("Shuttle Radar Topography Mission (SRTM GL1) Global 30m", "en");
         dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
         dist.setDescribedBy("https://portal.opentopography.org/raster?opentopoID=OTSRTM.082015.4326.1");
         dist.setDescribedByType(DataOnt.APP_OPENAPI_JSON);
-        dist.setFormat(DataOnt.FORMAT_OpenAPI);
+        dist.addFormat(DataOnt.FORMAT_OpenAPI);
         dist.setSpatialResolutionInMeters(BigDecimal.valueOf(30));
         dist.setAccessService(openTopographyAPI(srtmgl1));
         dist.setIdentifier("SRTMGL1");
+        dist.setAccessRights(DataOnt.no_limitation);
         return dist;
     }
 
     public DCATDistribution srtmGL3Distribution(DCATDataset srtmgl3) {
-        DCATDistribution dist = new DCATDistribution(model, openTopo, "srtmgl3", "SRTM GL3");
+        DCATDistribution dist = new DCATDistribution(model, openTopo, DataOnt.FORMAT_OpenAPI, "srtmgl3");
         dist.setDescription("Shuttle Radar Topography Mission (SRTM GL3) Global 90m", "en");
+        dist.setTitle("SRTM GL3");
         dist.setDistributionType(InspireVocabulary.WEB_SERVICE);
         dist.setDescribedBy("https://portal.opentopography.org/raster?opentopoID=OTSRTM.042013.4326.1");
         dist.setDescribedByType(DataOnt.APP_OPENAPI_JSON);
-        dist.setFormat(DataOnt.FORMAT_OpenAPI);
         dist.setSpatialResolutionInMeters(BigDecimal.valueOf(90));
         dist.setAccessService(openTopographyAPI(srtmgl3));
         dist.setIdentifier("SRTMGL3");
+        dist.setAccessRights(DataOnt.no_limitation);
         return dist;
     }
 
@@ -244,10 +284,8 @@ public class GlobalLinkedOpenData {
         service.setServedDatasets(dataset);
         service.setEndpointDescriptionUrl("https://portal.opentopography.org/apidocs/openapi.json");
         service.setKeywords("RESTFul Web Service", "Global", "DEM");
-        //service.setServiceType(InspireVocabulary.serviceCategory_CoverageAccessService);
+        service.setServiceType(InspireVocabulary.serviceCategory_CoverageAccessService);
         service.setPublisher("OpenTopography", "en");
         return service;
     }
-
-
 }

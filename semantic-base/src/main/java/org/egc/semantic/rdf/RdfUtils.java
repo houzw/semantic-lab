@@ -1,7 +1,6 @@
 package org.egc.semantic.rdf;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.DateUtils;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Graph;
@@ -33,14 +32,19 @@ public class RdfUtils {
         }
     }
 
-    /**
-     * Date literal literal.
-     *
-     * @param date the date in format: "yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd"
-     * @return the literal
-     */
-    public static Literal dateLiteral(String date) {
-        return ResourceFactory.createTypedLiteral(DateUtils.formatDate(DateUtils.parseDate(date)), XSDDatatype.XSDdate);
+    public static Literal dateLiteral(int year, int month, int day) {
+       /* Calendar c = Calendar.getInstance();
+        month = month < 1 ? 0 : month - 1;
+        day = Math.max(day, 1);
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);*/
+        String date = String.valueOf(year);
+        month = Math.max(month, 1);
+        day = Math.max(day, 1);
+        date += "-" + (month < 10 ? "0" + month : String.valueOf(month));
+        date += "-" + (day < 10 ? "0" + day : String.valueOf(day));
+        return ResourceFactory.createTypedLiteral(date, XSDDatatype.XSDdate);
     }
 
     public static void initNamespaces(PrefixMapping prefixMapping) {

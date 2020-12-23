@@ -5,12 +5,12 @@ import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.vocabulary.FOAF;
+import org.apache.jena.vocabulary.DCAT;
 import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 import org.egc.semantic.rdf.RdfUtils;
 import org.egc.semantic.utils.StringUtil;
-import org.egc.semantic.vocab.DCAT2;
 import org.egc.semantic.vocab.DataSourceOnt;
 
 import javax.validation.constraints.NotBlank;
@@ -66,8 +66,8 @@ public class DCATDataService {
         } else {
             this.service = this.model.createResource();
         }
-        this.service.addProperty(RDF.type, DCAT2.DataService);
-        this.service.addProperty(DCAT2.endpointURL, this.model.createResource(endpointUrl));
+        this.service.addProperty(RDF.type, DCAT.DataService);
+        this.service.addProperty(DCAT.endpointURL, this.model.createResource(endpointUrl));
         this.service.addProperty(DCTerms.title, this.model.createTypedLiteral(title));
     }
 
@@ -136,7 +136,7 @@ public class DCATDataService {
      */
     public void setEndpointDescriptionUrl(String endpointDescriptionUrl) {
         this.endpointDescriptionUrl = endpointDescriptionUrl;
-        this.service.addProperty(DCAT2.endpointDescription, model.createResource(endpointDescriptionUrl));
+        this.service.addProperty(DCAT.endpointDescription, model.createResource(endpointDescriptionUrl));
     }
 
     public String getEndpointUrl() {
@@ -171,7 +171,7 @@ public class DCATDataService {
         this.servedDatasets = new ArrayList<>();
         for (DCATDataset sd : servedDatasets) {
             Resource ds = sd.getDataset();
-            this.service.addProperty(DCAT2.servesDataset, ds);
+            this.service.addProperty(DCAT.servesDataset, ds);
             this.servedDatasets.add(ds);
         }
     }
@@ -198,7 +198,7 @@ public class DCATDataService {
 
     public void setTemporalResolution(String temporalResolution) {
         this.temporalResolution = temporalResolution;
-        this.service.addProperty(DCAT2.temporalResolution, model.createTypedLiteral(temporalResolution, XSDDatatype.XSDduration));
+        this.service.addProperty(DCAT.temporalResolution, model.createTypedLiteral(temporalResolution, XSDDatatype.XSDduration));
     }
 
     public List<Resource> getThemes() {

@@ -11,7 +11,6 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 import org.egc.semantic.rdf.RdfUtils;
 import org.egc.semantic.utils.StringUtil;
-import org.egc.semantic.vocab.DCAT2;
 import org.egc.semantic.vocab.DataOnt;
 import org.egc.semantic.vocab.DataSourceOnt;
 import org.egc.semantic.vocab.GeoDCAT;
@@ -28,6 +27,7 @@ public class DCATDistribution {
     private String description;
     private String identifier;
     private Resource accessService;
+    private Resource accessRights;
     private String accessUrl;
     private String downloadUrl;
     private BigDecimal spatialResolutionInMeters;
@@ -44,18 +44,11 @@ public class DCATDistribution {
     private String pageUrl;
     private String describedBy;
     private Resource describedByType;
+    private Resource license;
     private Model model;
     private Resource dist;
 
-    /**
-     * Instantiates a new Dcat distribution.
-     *
-     * @param model     the model
-     * @param accessUrl the access url
-     * @param localName the local name
-     * @param title     the title
-     */
-    public DCATDistribution(Model model, @NotBlank String accessUrl, String localName, String title) {
+    public DCATDistribution(Model model, @NotBlank String accessUrl, Resource format, String localName) {
         this.accessUrl = accessUrl;
         if (model == null) {
             this.model = RdfUtils.createDefaultModel();
@@ -68,11 +61,9 @@ public class DCATDistribution {
         } else {
             this.dist = this.model.createResource();
         }
-        if (StringUtils.isNotBlank(title)) {
-            this.dist.addProperty(SKOS.prefLabel, this.model.createLiteral(title, StringUtil.lang("en")));
-            this.dist.addProperty(DCTerms.title, this.model.createTypedLiteral(title));
-        }
+        this.dist = this.model.createResource();
         this.dist.addProperty(RDF.type, DCAT.Distribution);
+        this.dist.addProperty(DCTerms.format, format);
     }
 
     public BigDecimal getSpatialResolutionInMeters() {
@@ -81,7 +72,7 @@ public class DCATDistribution {
 
     public void setSpatialResolutionInMeters(BigDecimal spatialResolutionInMeters) {
         this.spatialResolutionInMeters = spatialResolutionInMeters;
-        this.dist.addProperty(DCAT2.spatialResolutionInMeters, model.createTypedLiteral(spatialResolutionInMeters, XSDDatatype.XSDdecimal));
+        this.dist.addProperty(DCAT.spatialResolutionInMeters, model.createTypedLiteral(spatialResolutionInMeters, XSDDatatype.XSDdecimal));
     }
 
     public BigDecimal getSpatialResolutionInDegrees() {
@@ -104,7 +95,7 @@ public class DCATDistribution {
      */
     public void setTemporalResolution(String temporalResolution) {
         this.temporalResolution = temporalResolution;
-        this.dist.addProperty(DCAT2.temporalResolution, model.createTypedLiteral(temporalResolution, XSDDatatype.XSDduration));
+        this.dist.addProperty(DCAT.temporalResolution, model.createTypedLiteral(temporalResolution, XSDDatatype.XSDduration));
     }
 
     public Resource getTemporal() {
@@ -175,7 +166,7 @@ public class DCATDistribution {
      */
     public void setAccessService(DCATDataService dataService) {
         this.accessService = dataService.getService();
-        this.dist.addProperty(DCAT2.accessService, dataService.getService());
+        this.dist.addProperty(DCAT.accessService, dataService.getService());
     }
 
     /**
@@ -264,6 +255,13 @@ public class DCATDistribution {
 
     public void setTitle(String title) {
         this.title = title;
+        this.dist.addProperty(SKOS.prefLabel, this.model.createLiteral(title, StringUtil.lang("en")));
+        this.dist.addProperty(DCTerms.title, model.createTypedLiteral(title));
+    }
+
+    public void setTitle(String title, String lang) {
+        this.title = title;
+        this.dist.addProperty(SKOS.prefLabel, this.model.createLiteral(title, StringUtil.lang(lang)));
         this.dist.addProperty(DCTerms.title, model.createTypedLiteral(title));
     }
 
@@ -294,7 +292,7 @@ public class DCATDistribution {
      *
      * @param formatMediaType the format media type
      */
-    public void setFormat(String formatMediaType) {
+    public void addFormat(String formatMediaType) {
         this.format = format;
         this.dist.addProperty(DCTerms.format, DataOnt.createMediaType(formatMediaType));
     }
@@ -304,7 +302,7 @@ public class DCATDistribution {
      *
      * @param format the format
      */
-    public void setFormat(Resource format) {
+    public void addFormat(Resource format) {
         this.format = format.getLocalName();
         this.dist.addProperty(DCTerms.format, format);
     }
@@ -320,7 +318,17 @@ public class DCATDistribution {
 
     public void setCompressFormat(Resource compressFormat) {
         this.compressFormat = compressFormat.getLocalName();
-        this.dist.addProperty(DCAT2.compressFormat, compressFormat);
+        this.dist.addProperty(DCAT.compressFormat, compressFormat);
+    }
+
+    private Resource language;
+
+    public Resource getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Resource language) {
+        this.language = language;
     }
 
     public static String getNS() {
@@ -336,5 +344,23 @@ public class DCATDistribution {
         return dist;
     }
 
+    public Resource getAccessRights() {
+        return accessRights;
+    }
 
+    public void setAccessRights(Resource accessRights) {
+        this.accessRights = accessRights;
+    }
+
+    public Resource getLicense() {
+        return license;
+    }
+
+    /**
+     * @see <a href="https://op.europa.eu/en/web/eu-vocabularies/at-dataset/-/resource/dataset/licence">eu-vocabularies-licence</a>
+     * @param license
+     */
+    public void setLicense(Resource license) {
+        this.license = license;
+    }
 }

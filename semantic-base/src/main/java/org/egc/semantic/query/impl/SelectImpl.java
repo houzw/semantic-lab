@@ -14,6 +14,7 @@ import org.egc.semantic.rdf.Consts;
 import org.egc.semantic.rdf.OntologyUtils;
 import org.egc.semantic.utils.StringUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,12 @@ public class SelectImpl implements Select {
         return new BaseSelect().getQueryVars(query);
     }
 
+
+    @Override
+    public Query readQueries(String sparqlFilepath) {
+        File file = new File(sparqlFilepath);
+        return QueryFactory.read(file.getAbsolutePath());
+    }
 
     @Override
     public List<String> getIndividualLocalNames(String sparqlStr, Model model) {

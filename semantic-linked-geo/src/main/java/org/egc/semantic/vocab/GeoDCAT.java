@@ -29,5 +29,4 @@ public class GeoDCAT {
     public static final Property spatialResolutionInDegrees = DCAT.createProperty(NS, "spatialResolutionInDegrees");
     public static final Property spatialResolutionAsVerticalDistanceInMeters = DCAT.createProperty(NS, "spatialResolutionAsVerticalDistanceInMeters");
 
-
 }

@@ -21,32 +21,42 @@ import org.slf4j.LoggerFactory;
 public class GraphDB {
     private static final Logger log = LoggerFactory.getLogger(GraphDB.class);
 
-    private static final String REPO_SERVER =
-            "http://localhost:7200/repositories";
-    private static final String REPO_ID = "egc_model";
+    private String REPO_QUERY;
+    private String REPO_UPDATE;
 
-    private static final String REPO_QUERY =
-            "http://localhost:7200/repositories/egc_model";
-    private static final String REPO_UPDATE =
-            "http://localhost:7200/repositories/egc_model/statements";
+    private String repoServer;
+    private String repoId;
 
+    public GraphDB(String repoServer, String repoId) {
+        this.repoId = repoId;
+        this.repoServer = repoServer;
+        this.REPO_QUERY = repoServer + "/" + repoId;
+        this.REPO_UPDATE = repoServer + "/" + repoId + "/statements";
+    }
 
     /*************************************
      *              jena
      ************************************/
-    private static void insert(String strInsert) {
+    public void insert(String strInsert) {
         UpdateRequest updateRequest = UpdateFactory.create(strInsert);
         UpdateProcessor updateProcessor = UpdateExecutionFactory.createRemote(updateRequest, REPO_UPDATE);
         updateProcessor.execute();
     }
 
+    public ResultSet query(String strQuery) {
+        QueryExecution queryExecution = QueryExecutionFactory.sparqlService(REPO_QUERY, strQuery);
+        ResultSet results = queryExecution.execSelect();
+//        RDFOutput.encodeAsModel(results);
+        queryExecution.close();
+        return results;
+    }
 
-    private static void query(String strQuery) {
+    public void query(String strQuery, String variable) {
         QueryExecution queryExecution = QueryExecutionFactory.sparqlService(REPO_QUERY, strQuery);
         for (ResultSet results = queryExecution.execSelect(); results.hasNext(); ) {
             QuerySolution qs = results.next();
-            String strName = qs.get("?name").toString();
-            log.trace("name = " + strName);
+            String strName = qs.get("?" + variable).toString();
+            System.out.println(variable + " = " + strName);
         }
         queryExecution.close();
     }

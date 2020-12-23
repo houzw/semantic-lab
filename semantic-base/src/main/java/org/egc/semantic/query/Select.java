@@ -11,12 +11,15 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
- * TODO
+ * SPARQL Select
  *
  * @author houzhiwei
  * @date 2017/4/17 16:31
  */
 public interface Select {
+
+    Query readQueries(String sparqlFilepath);
+
     /**
      * 获得实例名称
      *

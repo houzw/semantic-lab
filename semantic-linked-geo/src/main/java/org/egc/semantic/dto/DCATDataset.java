@@ -20,7 +20,6 @@ import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -47,12 +46,14 @@ public class DCATDataset {
     private BigDecimal spatialResolutionInDegrees;
     private Resource distribution;
     private Resource creator;
+    private Resource contactPoint;
+    private Resource language;
     //"yyyy-MM-dd"
-    private String issued;
+    private Literal issued;
     //xsd:duration
     private String temporalResolution;
     //"yyyy-MM-dd"
-    private String modified;
+    private Literal modified;
     private String citation;
     private Resource temporal;
     private List<Resource> themes;
@@ -93,6 +94,7 @@ public class DCATDataset {
             this.model = model;
         }
         DCAT2.initDCATNamespaces(model);
+        DCAT2.initThemeNamespaces(model);
         this.dataset = this.model.createResource(NS + localName.replaceAll(" ", "_"));
         this.dataset.addProperty(RDF.type, DCAT.Dataset);
         this.dataset.addProperty(DCTerms.description, this.model.createLiteral(description, "en"));
@@ -209,7 +211,7 @@ public class DCATDataset {
 
     public void setSpatialResolutionInMeters(BigDecimal spatialResolutionInMeters) {
         this.spatialResolutionInMeters = spatialResolutionInMeters;
-        this.dataset.addProperty(DCAT2.spatialResolutionInMeters, model.createTypedLiteral(spatialResolutionInMeters, XSDDatatype.XSDdecimal));
+        this.dataset.addProperty(DCAT.spatialResolutionInMeters, model.createTypedLiteral(spatialResolutionInMeters, XSDDatatype.XSDdecimal));
     }
 
     public BigDecimal getSpatialResolutionInDegrees() {
@@ -218,7 +220,7 @@ public class DCATDataset {
 
     public void setSpatialResolutionInDegrees(BigDecimal spatialResolutionInDegrees) {
         this.spatialResolutionInDegrees = spatialResolutionInDegrees;
-        this.dataset.addProperty(GeoDCAT.spatialResolutionInDegrees, model.createTypedLiteral(spatialResolutionInMeters, XSDDatatype.XSDdecimal));
+        this.dataset.addProperty(GeoDCAT.spatialResolutionInDegrees, model.createTypedLiteral(spatialResolutionInDegrees, XSDDatatype.XSDdecimal));
     }
 
     public Resource getDistribution() {
@@ -239,13 +241,34 @@ public class DCATDataset {
         this.dataset.addProperty(DCTerms.creator, creator);
     }
 
+    public Resource getContactPoint() {
+        return contactPoint;
+    }
+
+    public void setContactPoint(Resource contactPoint) {
+        this.contactPoint = contactPoint;
+    }
+
+    public void setContactPoint(String name, String email) {
+        this.contactPoint = DCAT2.createContactPoint(this.model, name, email);
+        this.dataset.addProperty(DCAT.contactPoint, this.contactPoint);
+    }
+
+    public Resource getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Resource language) {
+        this.language = language;
+    }
+
     public Literal getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Literal startDate) {
         this.startDate = startDate;
-        this.dataset.addProperty(DCAT2.startDate, startDate);
+        this.dataset.addProperty(DCAT.startDate, startDate);
     }
 
     /**
@@ -254,8 +277,8 @@ public class DCATDataset {
      * @param day   日，大于 0
      */
     public void setStartDate(int year, int month, int day) {
-        this.startDate = model.createTypedLiteral(setCalendar(year, month, day), XSDDatatype.XSDdate);
-        this.dataset.addProperty(DCAT2.startDate, this.startDate);
+        this.startDate = RdfUtils.dateLiteral(year, month, day);
+        this.dataset.addProperty(DCAT.startDate, this.startDate);
     }
 
     public Literal getEndDate() {
@@ -264,24 +287,9 @@ public class DCATDataset {
 
     public void setEndDate(Literal endDate) {
         this.endDate = endDate;
-        this.dataset.addProperty(DCAT2.endDate, endDate);
+        this.dataset.addProperty(DCAT.endDate, endDate);
     }
 
-    /**
-     * @param year  年，必须大于 1900
-     * @param month 月，大于 0。 小于等于 0 将会设置为 0
-     * @param day   日，大于 0。小于等于 0 将会设置为 0
-     * @return Calendar
-     */
-    private Calendar setCalendar(int year, int month, int day) {
-        Calendar c = Calendar.getInstance();
-        month = month < 1 ? 0 : month - 1;
-        day = Math.max(day, 1);
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        return c;
-    }
 
     /**
      * @param year  年，必须大于 1900
@@ -289,8 +297,8 @@ public class DCATDataset {
      * @param day   日，大于 0。小于等于 0 将会设置为 0
      */
     public void setEndDate(int year, int month, int day) {
-        this.endDate = model.createTypedLiteral(setCalendar(year, month, day), XSDDatatype.XSDdate);
-        this.dataset.addProperty(DCAT2.endDate, this.endDate);
+        this.endDate = RdfUtils.dateLiteral(year, month, day);
+        this.dataset.addProperty(DCAT.endDate, this.endDate);
     }
 
     public void setCreator(String creatorName, String lang) {
@@ -302,18 +310,20 @@ public class DCATDataset {
         this.dataset.addProperty(DCTerms.creator, resource);
     }
 
-    public String getIssued() {
+    public Literal getIssued() {
         return issued;
     }
 
     /**
      * Sets issued.
      *
-     * @param issued the issued date in format "yyyy-MM-dd"
+     * @param year  the year
+     * @param month the month
+     * @param day   the day
      */
-    public void setIssued(String issued) {
-        this.issued = issued;
-        this.dataset.addProperty(DCTerms.issued, RdfUtils.dateLiteral(issued));
+    public void setIssued(int year, int month, int day) {
+        this.issued = RdfUtils.dateLiteral(year, month, day);
+        this.dataset.addProperty(DCTerms.issued, this.issued);
     }
 
     public String getTemporalResolution() {
@@ -327,21 +337,23 @@ public class DCATDataset {
      */
     public void setTemporalResolution(String temporalResolution) {
         this.temporalResolution = temporalResolution;
-        this.dataset.addProperty(DCAT2.temporalResolution, model.createTypedLiteral(temporalResolution, XSDDatatype.XSDduration));
+        this.dataset.addProperty(DCAT.temporalResolution, model.createTypedLiteral(temporalResolution, XSDDatatype.XSDduration));
     }
 
-    public String getModified() {
+    public Literal getModified() {
         return modified;
     }
 
     /**
      * Sets modified.
      *
-     * @param modified the modified date in format "yyyy-MM-dd"
+     * @param year  the year
+     * @param month the month
+     * @param day   the day
      */
-    public void setModified(String modified) {
-        this.modified = modified;
-        this.dataset.addProperty(DCTerms.modified, RdfUtils.dateLiteral(modified));
+    public void setModified(int year, int month, int day) {
+        this.modified = RdfUtils.dateLiteral(year, month, day);
+        this.dataset.addProperty(DCTerms.modified, modified);
     }
 
     public Resource getTemporal() {
@@ -367,6 +379,16 @@ public class DCATDataset {
         return spatialIdentifier;
     }
 
+    /**
+     * Sets spatial identifier.
+     * GCMD location
+     * http://publications.europa.eu/resource/authority/country
+     * http://publications.europa.eu/resource/authority/place
+     * http://publications.europa.eu/resource/authority/continent
+     * The geonames URI sets. http://www.geonames.org/
+     *
+     * @param spatialIdentifier the spatial identifier
+     */
     public void setSpatialIdentifier(Resource spatialIdentifier) {
         this.spatialIdentifier = spatialIdentifier;
         this.dataset.addProperty(DCTerms.spatial, spatialIdentifier);

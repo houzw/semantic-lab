@@ -17,9 +17,6 @@ import org.egc.commons.gis.VectorMetadata;
 import org.egc.semantic.rdf.RdfUtils;
 import org.egc.semantic.vocab.*;
 
-//import org.apache.jena.geosparql.implementation.WKTLiteralFactory;
-//import org.apache.jena.geosparql.implementation.vocabulary.GeoSPARQL_URI;
-
 /**
  * @author houzhiwei
  * @date 2020/12/6 15:06
@@ -57,7 +54,7 @@ public class GeoDataGraphImpl implements GeoDataGraph {
             sub.addProperty(GeoDCAT.spatialResolutionInDegrees, model.createTypedLiteral(metadata.getPixelSize(), XSDDatatype.XSDdecimal));
         } else if ("Metre".equalsIgnoreCase(metadata.getUnit())) {
             sub.addProperty(DataOnt.hasUOM, GeoVocabulary.meter);
-            sub.addProperty(DCAT2.spatialResolutionInMeters, model.createTypedLiteral(metadata.getPixelSize(), XSDDatatype.XSDdecimal));
+            sub.addProperty(DCAT.spatialResolutionInMeters, model.createTypedLiteral(metadata.getPixelSize(), XSDDatatype.XSDdecimal));
         }
         if ("GTiff".equalsIgnoreCase(metadata.getFormat())) {
             sub.addProperty(DCTerms.format, DataOnt.IMAGE_TIFF);

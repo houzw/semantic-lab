@@ -199,7 +199,7 @@
                 <groupId>org.apache.sis.non-free</groupId>
                 <artifactId>sis-embedded-data</artifactId>
                 <version>1.0</version>
-                <!--  <scope>runtime</scope>-->
+                <scope>runtime</scope>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.sis.core/sis-referencing -->
             <!-- https://mvnrepository.com/artifact/com.ontotext.graphdb/graphdb-free-runtime -->
@@ -208,17 +208,13 @@
                 <artifactId>graphdb-free-runtime</artifactId>
                 <version>9.0.0</version>
             </dependency>
-            <!-- <dependency>
-                 <groupId>io.github.galbiston</groupId>
-                 <artifactId>geosparql-jena</artifactId>
-                 <version>1.1.2</version>
-             </dependency>-->
+
             <!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-queryalgebra-geosparql -->
-            <!--<dependency>
+            <dependency>
                 <groupId>org.eclipse.rdf4j</groupId>
                 <artifactId>rdf4j-queryalgebra-geosparql</artifactId>
                 <version>3.5.0</version>
-            </dependency>-->
+            </dependency>
             <dependency>
                 <groupId>org.eclipse.rdf4j</groupId>
                 <artifactId>rdf4j-model</artifactId>
@@ -263,7 +259,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
-                <version>4.2.0.RELEASE</version>
+                <version>4.3.30.RELEASE</version>
             </dependency>
 
             <!-- fastjson -->

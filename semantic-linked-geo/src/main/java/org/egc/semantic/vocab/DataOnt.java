@@ -12,6 +12,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
 import org.egc.semantic.rdf.OntologyUtils;
 import org.egc.semantic.rdf.RdfUtils;
 
@@ -95,11 +96,15 @@ public class DataOnt {
     public static final Resource APP_OPENAPI_YAML = createMediaType("application/vnd.oai.openapi");
     public static final Resource APP_7Z = createMediaType("application/x-7z-compressed");
     public static final Resource APP_DBF = createMediaType("application/dbase");
+    public static final Resource APP_EXE = createMediaType("application/vnd.microsoft.portable-executable");
+    public static final Resource APP_ZIP = createMediaType("application/zip");
     /**
      * 用于表示 Web API， 如 rest api
      */
     public static final Resource FORMAT_API = DATA.createResource(NS + "API");
     public static final Resource FORMAT_OpenAPI = DATA.createResource(NS + "OpenAPI");
+    //bil
+    public static final Resource FORMAT_EHdr = DATA.createResource(NS + "EHdr");
     // 没有 iana 官网定义
     public static final Resource APP_ASCII_GRASS = createMediaType("application/image-ascii-grass");
     public static final Resource APP_OCTET_STREAM = createMediaType("application/octet-stream");
@@ -153,7 +158,6 @@ public class DataOnt {
         return DATA.createResource(NS + localName);
     }
 
-
     public static Resource createResource(String uri) {
         return DATA.createResource(uri);
     }
@@ -166,6 +170,17 @@ public class DataOnt {
         OntModel ontModel = getOntModel();
         OntClass formatCls = ontModel.createClass(NS + "DataFormat");
         return ontModel.createIndividual(NS + format, formatCls);
+    }
+
+    public static final Resource no_limitation = createAccessRights("no limitation");
+    public static final Resource registration_required = createAccessRights("registration required");
+    public static final Resource authorization_required = createAccessRights("authorization required");
+
+    public static Resource createAccessRights(String rights) {
+        Resource r = DATA.createResource();
+        r.addProperty(RDF.type, DCTerms.RightsStatement);
+        r.addProperty(RDFS.label, DATA.createLiteral(rights, "en"));
+        return r;
     }
 
 }

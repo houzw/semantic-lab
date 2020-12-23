@@ -6,6 +6,7 @@ import org.apache.jena.geosparql.implementation.datatype.WKTDatatype;
 import org.apache.jena.geosparql.implementation.vocabulary.Geo;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.riot.Lang;
+import org.egc.semantic.geospatial.ChinaLinkedOpenData;
 import org.egc.semantic.geospatial.GlobalLinkedOpenData;
 import org.egc.semantic.utils.OntFileUtils;
 import org.junit.Test;
@@ -26,7 +27,9 @@ public class DCATTest {
     @Test
     public void test() throws IOException {
         Model model = GlobalLinkedOpenData.getInstance().getModel();
-        OntFileUtils.save(model, "J:/demos/ttl/dswm.ttl", Lang.TURTLE);
+        Model modelChina = ChinaLinkedOpenData.getInstance().getModel();
+        model.union(modelChina);
+        OntFileUtils.save(model, "e:linkedModelData.ttl", Lang.TURTLE);
     }
 
     @Test
@@ -76,10 +79,11 @@ public class DCATTest {
             instance.set(Calendar.DAY_OF_MONTH, 1);
         } else {
             instance.set(Calendar.YEAR, year);
-            instance.set(Calendar.MONTH, month-1);
+            instance.set(Calendar.MONTH, month - 1);
             instance.set(Calendar.DAY_OF_MONTH, day);
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println(format.format(instance.getTime()));
     }
+
 }

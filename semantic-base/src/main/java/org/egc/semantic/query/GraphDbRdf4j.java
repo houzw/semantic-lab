@@ -37,14 +37,6 @@ import java.util.Arrays;
 public class GraphDbRdf4j {
     private static final Logger log = LoggerFactory.getLogger(GraphDbRdf4j.class);
 
-    private static final String REPO_SERVER =
-            "http://localhost:7200/repositories";
-    private static final String REPO_ID = "egc_model";
-
-    private static final String REPO_QUERY =
-            "http://localhost:7200/repositories/egc_model";
-    private static final String REPO_UPDATE =
-            "http://localhost:7200/repositories/egc_model/statements";
 
     private String repoServer;
     private String repoId;
@@ -85,15 +77,29 @@ public class GraphDbRdf4j {
         insert(repositoryConnection, enable);
     }
 
-    public void query(RepositoryConnection repositoryConnection, String strQuery) {
+    public TupleQueryResult query(RepositoryConnection repositoryConnection, String strQuery) {
+        TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery(QueryLanguage.SPARQL, strQuery);
+        TupleQueryResult result = null;
+        try {
+            result = tupleQuery.evaluate();
+        } catch (QueryEvaluationException qee) {
+            log.error(Arrays.toString(qee.getStackTrace()), qee);
+        } finally {
+            assert result != null;
+            result.close();
+        }
+        return result;
+    }
+
+    public void query(RepositoryConnection repositoryConnection, String strQuery, String variable) {
         TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery(QueryLanguage.SPARQL, strQuery);
         TupleQueryResult result = null;
         try {
             result = tupleQuery.evaluate();
             while (result.hasNext()) {
                 BindingSet bindingSet = result.next();
-                SimpleLiteral name = (SimpleLiteral) bindingSet.getValue("name");
-                log.trace("name = " + name.stringValue());
+                SimpleLiteral name = (SimpleLiteral) bindingSet.getValue(variable);
+                log.trace(variable + " = " + name.stringValue());
             }
         } catch (QueryEvaluationException qee) {
             log.error(Arrays.toString(qee.getStackTrace()), qee);
