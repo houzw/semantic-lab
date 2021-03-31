@@ -32,7 +32,7 @@
         <commons.version>2.1-SNAPSHOT</commons.version>
         <owlapi.version>5.0.2</owlapi.version>
         <fuseki.version>2.5.0</fuseki.version>
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <fastjson.version>1.2.75</fastjson.version>
         <jackson.version>2.10.4</jackson.version>
         <slf4j.version>1.7.30</slf4j.version>
